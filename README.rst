@@ -41,6 +41,9 @@ You can skip this step if you have ``runai`` and ``kubectl`` running on your mac
     ``--memory 64G`` is used to request 64Gi of memory. It's always used in the command examples below but can be omitted
     if you don't need that much memory.
 
+    ``--large-shm`` is used to request a large shared memory in the docker container. It's always used in the command 
+    examples below but can be omitted if you don't need that much shared memory.
+
 
 Create ssh secret for kubernetes
 --------------------------------
@@ -91,7 +94,7 @@ To start an interactive session with the image, you can use the following comman
 .. code-block:: bash
     
     runai submit -i registry.rcp.epfl.ch/rcp-runai-upcourtine-klee/wyss_nvidia_pytorch_deps:latest \
-        -e USER='klee' -e SSH_PRIVATE_KEY=SECRET:ssh-key-secret,id_ed25519_runai \
+        -e USER='klee' -e SSH_PRIVATE_KEY=SECRET:ssh-key-secret,id_ed25519_runai --large-shm \
         --pvc runai-upcourtine-klee-scratch:/home/klee/nas:rw --interactive --attach -g 1 --cpu 12 --memory 64G
 
 This command will start an interactive session with the image and attach the current terminal to the session. The session will be
@@ -112,7 +115,7 @@ The whole command is:
 .. code-block:: bash
 
     runai submit -i registry.rcp.epfl.ch/rcp-runai-upcourtine-klee/wyss_nvidia_pytorch_deps:latest --attach \
-        -e SSH_PRIVATE_KEY=SECRET:ssh-key-secret,id_ed25519_runai -e USER='klee' \
+        -e SSH_PRIVATE_KEY=SECRET:ssh-key-secret,id_ed25519_runai -e USER='klee' --large-shm \
         -e JUPYTER_PORT=8889 --service-type portforward --port 8888:8889 \
         --pvc runai-upcourtine-klee-scratch:/home/klee/nas:rw --interactive -g 1 --cpu 12 --memory 64G
 
@@ -153,7 +156,7 @@ Example:
 .. code-block:: bash
 
     runai submit -i registry.rcp.epfl.ch/rcp-runai-upcourtine-klee/wyss_nvidia_pytorch_deps:latest --attach \
-        -e SSH_PRIVATE_KEY=SECRET:ssh-key-secret,id_ed25519_runai -e USER='klee' \
+        -e SSH_PRIVATE_KEY=SECRET:ssh-key-secret,id_ed25519_runai -e USER='klee' --large-shm \
         -e SCRIPT_PATH='notebooks/tycho/runai_test.py' -g 1 --cpu 12 --memory 64G \
         --pvc runai-upcourtine-klee-scratch:/home/klee/nas:rw -- /home/klee/run_script.sh
 
